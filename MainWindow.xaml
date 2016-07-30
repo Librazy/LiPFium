@@ -13,11 +13,9 @@
         Height="510"
         MinWidth="610"
         MinHeight="400"
+        SizeChanged="MWindowSC"
         Style="{StaticResource LiPFiumWindow}"
         mc:Ignorable="d">
-    <attachedCommandBehavior:CommandBehaviorCollection.Behaviors>
-        <attachedCommandBehavior:BehaviorBinding Command="{Binding SizeChangedCommand, ElementName=MWindow}" Event="SizeChanged" />
-    </attachedCommandBehavior:CommandBehaviorCollection.Behaviors>
 
     <!--  ReSharper restore Xaml.RedundantNamespaceAlias  -->
 </Window>

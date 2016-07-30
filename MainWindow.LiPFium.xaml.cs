@@ -29,7 +29,7 @@ namespace LiPFium
         /// <param name="to">终止颜色</param>
         /// <param name="t">时间 秒</param>
         /// <param name="fg">是否设置前景色</param>
-        private static void SetBGTransform(Control b, Color from, Color to, double t, bool fg = false)
+        private static void SetColorAnimation(Control b, Color from, Color to, double t, bool fg = false)
         {
             var brush = new SolidColorBrush();
 
@@ -85,20 +85,7 @@ namespace LiPFium
 
         #region MainWindow Events Core
 
-        private void ToRed(Control a)
-        {
-            SetBGTransform(a, ((SolidColorBrush)a.Background).Color, Colors.Red, 0.2);
-        }
-        private void ToGray(Control a)
-        {
-            SetBGTransform(a, ((SolidColorBrush)a.Background).Color, Color.FromRgb(218, 218, 218), 0.2);
-        }
-        private void ToWhite(Control a)
-        {
-            SetBGTransform(a, ((SolidColorBrush)a.Background).Color, Color.FromRgb(240, 240, 240), 0.3);
-        }
-
-        private void MWindowSC()
+        private void MWindowSC(object sender, SizeChangedEventArgs sizeChangedEventArgs)
         {
             if (WindowState == WindowState.Maximized)
             {
@@ -111,6 +98,19 @@ namespace LiPFium
                 WMargin = 10;
             }
             //ScaledFontSize = (BackspaceButton?.FontSize + 24)/2 ?? 30;
+        }
+        #region Command Handlers Core
+        private void ToRed(Control a)
+        {
+            SetColorAnimation(a, ((SolidColorBrush)a.Background).Color, Colors.Red, 0.2);
+        }
+        private void ToGray(Control a)
+        {
+            SetColorAnimation(a, ((SolidColorBrush)a.Background).Color, Color.FromRgb(218, 218, 218), 0.2);
+        }
+        private void ToWhite(Control a)
+        {
+            SetColorAnimation(a, ((SolidColorBrush)a.Background).Color, Color.FromRgb(240, 240, 240), 0.3);
         }
 
         private void CloseApp()
@@ -137,7 +137,8 @@ namespace LiPFium
             }
         }
 
-     #endregion
+        #endregion
+        #endregion
 
 
         #region Commands Core
@@ -161,11 +162,6 @@ namespace LiPFium
 
         public RelayCommand CloseCommand
             => _closeCommand ?? (_closeCommand = new RelayCommand(CloseApp));
-
-        private RelayCommand _sizeChangedCommand;
-
-        public RelayCommand SizeChangedCommand
-            => _sizeChangedCommand ?? (_sizeChangedCommand = new RelayCommand(MWindowSC));
 
         private RelayCommand _miniumWindowCommand;
 
