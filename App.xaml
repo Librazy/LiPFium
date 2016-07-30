@@ -36,114 +36,24 @@
                 </Setter.Value>
             </Setter>
         </Style>
-        <Style x:Key="DotButton">
-            <Style.TargetType>
-                <x:Type TypeName="Button" />
-            </Style.TargetType>
-            <Setter Property="OverridesDefaultStyle" Value="true" />
-            <Setter Property="Panel.ZIndex" Value="1" />
-            <Setter Property="Foreground" Value="#FF2D956F" />
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate>
-                        <ControlTemplate.TargetType>
-                            <x:Type TypeName="Button" />
-                        </ControlTemplate.TargetType>
-                        <Border Name="Border"
-                                HorizontalAlignment="Stretch"
-                                VerticalAlignment="Stretch"
-                                Background="{TemplateBinding Control.Background}"
-                                BorderThickness="0"
-                                Focusable="False">
-                            <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
-                                <Ellipse Margin="-8"
-                                         Panel.ZIndex="1"
-                                         Fill="{TemplateBinding Control.Foreground}"
-                                         Stretch="Uniform" />
-                            </Grid>
-                        </Border>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-        <Style x:Key="GridButton">
-            <Style.TargetType>
-                <x:Type TypeName="Button" />
-            </Style.TargetType>
-            <Setter Property="OverridesDefaultStyle" Value="true" />
-            <Setter Property="Panel.ZIndex" Value="1" />
-            <Setter Property="Foreground" Value="#FF2D956F" />
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate>
-                        <ControlTemplate.TargetType>
-                            <x:Type TypeName="Button" />
-                        </ControlTemplate.TargetType>
-                        <Border Name="Border"
-                                HorizontalAlignment="Stretch"
-                                VerticalAlignment="Stretch"
-                                Background="{TemplateBinding Control.Background}"
-                                BorderThickness="0"
-                                Focusable="False">
-                            <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
-                                <ed:RegularPolygon Width="30"
-                                                   Height="30"
-                                                   Fill="{TemplateBinding Control.Foreground}"
-                                                   InnerRadius="0.6"
-                                                   PointCount="5"
-                                                   Stretch="Uniform" />
 
-                            </Grid>
-                        </Border>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-        <Style x:Key="LineButton">
-            <Style.TargetType>
-                <x:Type TypeName="Button" />
-            </Style.TargetType>
-            <Setter Property="OverridesDefaultStyle" Value="true" />
-            <Setter Property="HorizontalAlignment" Value="Stretch" />
-            <Setter Property="VerticalAlignment" Value="Stretch" />
-            <Setter Property="Foreground" Value="#994EC9B2" />
-            <Setter Property="CommandParameter" Value="{Binding RelativeSource={RelativeSource Self}}" />
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate>
-                        <ControlTemplate.TargetType>
-                            <x:Type TypeName="Button" />
-                        </ControlTemplate.TargetType>
-                        <Border Background="Transparent">
-                            <Border Name="Border"
-                                    HorizontalAlignment="Stretch"
-                                    VerticalAlignment="Stretch"
-                                    Background="Transparent"
-                                    BorderThickness="{TemplateBinding BorderThickness}"
-                                    IsHitTestVisible="True">
-                                <Rectangle Fill="{TemplateBinding Foreground}" />
-                            </Border>
-                        </Border>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
         <Style x:Key="LiPFiumWindow">
             <Style.TargetType>
                 <x:Type TypeName="Window" />
             </Style.TargetType>
+
             <Setter Property="AllowsTransparency" Value="true" />
             <Setter Property="Background" Value="Transparent" />
             <Setter Property="FontSize" Value="24" />
             <Setter Property="ResizeMode" Value="CanResize" />
             <Setter Property="WindowStyle" Value="None" />
-            <EventSetter Event="SizeChanged" Handler="MWindowSC" />
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate>
                         <ControlTemplate.TargetType>
                             <x:Type TypeName="Window" />
                         </ControlTemplate.TargetType>
+
                         <Grid Name="_WinGrid" Margin="{Binding Path=WMargin, ElementName=MWindow}">
                             <Border Background="{TemplateBinding Background}"
                                     BorderBrush="{TemplateBinding BorderBrush}"
@@ -165,7 +75,6 @@
                                     <Rectangle Height="30"
                                                VerticalAlignment="Top"
                                                Fill="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"
-                                               MouseDown="TitlebarOnMD"
                                                RadiusX="5"
                                                RadiusY="5" />
                                     <Button x:Name="CloseButton"
@@ -183,13 +92,13 @@
                                             FontSize="12"
                                             Style="{StaticResource CtrlButton}">
                                         <attachedCommandBehavior:CommandBehaviorCollection.Behaviors>
-                                            <attachedCommandBehavior:BehaviorBinding Command="{Binding HoverGrayCommand,
+                                            <attachedCommandBehavior:BehaviorBinding Command="{Binding HoverRedCommand,
                                                                                                        ElementName=MWindow}"
-                                                                                     CommandParameter="{Binding Self}"
+                                                                                     CommandParameter="{Binding ElementName=CloseButton}"
                                                                                      Event="MouseEnter" />
                                             <attachedCommandBehavior:BehaviorBinding Command="{Binding BackWhiteCommand,
                                                                                                        ElementName=MWindow}"
-                                                                                     CommandParameter="{Binding Self}"
+                                                                                     CommandParameter="{Binding ElementName=CloseButton}"
                                                                                      Event="MouseLeave" />
                                         </attachedCommandBehavior:CommandBehaviorCollection.Behaviors>
                                     </Button>
@@ -202,13 +111,23 @@
                                             Background="#00000000"
                                             BorderBrush="{x:Null}"
                                             BorderThickness="0"
-                                            Click="MARButtonOnClick"
+                                            Command="{Binding MORWindowCommand,
+                                                              ElementName=MWindow}"
                                             Content="&#xE1D9;"
                                             FontFamily="Segoe UI Symbol"
                                             FontSize="12"
-                                            MouseEnter="MARButtonOnME"
-                                            MouseLeave="MARButtonOnML"
-                                            Style="{StaticResource CtrlButton}" />
+                                            Style="{StaticResource CtrlButton}">
+                                        <attachedCommandBehavior:CommandBehaviorCollection.Behaviors>
+                                            <attachedCommandBehavior:BehaviorBinding Command="{Binding HoverGrayCommand,
+                                                                                                       ElementName=MWindow}"
+                                                                                     CommandParameter="{Binding ElementName=MaximizeAndRestoreButton}"
+                                                                                     Event="MouseEnter" />
+                                            <attachedCommandBehavior:BehaviorBinding Command="{Binding BackWhiteCommand,
+                                                                                                       ElementName=MWindow}"
+                                                                                     CommandParameter="{Binding ElementName=MaximizeAndRestoreButton}"
+                                                                                     Event="MouseLeave" />
+                                        </attachedCommandBehavior:CommandBehaviorCollection.Behaviors>
+                                    </Button>
                                     <Button x:Name="MiniumButton"
                                             Width="45"
                                             Height="30"
@@ -218,13 +137,23 @@
                                             Background="#FFF2F2F2"
                                             BorderBrush="{x:Null}"
                                             BorderThickness="0"
-                                            Click="MiniumButtonOnClick"
+                                            Command="{Binding MiniumWindowCommand,
+                                                              ElementName=MWindow}"
                                             Content="&#xE108;"
                                             FontFamily="Segoe UI Symbol"
                                             FontSize="12"
-                                            MouseEnter="MiniumButtonOnME"
-                                            MouseLeave="MiniumButtonOnML"
-                                            Style="{StaticResource CtrlButton}" />
+                                            Style="{StaticResource CtrlButton}">
+                                        <attachedCommandBehavior:CommandBehaviorCollection.Behaviors>
+                                            <attachedCommandBehavior:BehaviorBinding Command="{Binding HoverGrayCommand,
+                                                                                                       ElementName=MWindow}"
+                                                                                     CommandParameter="{Binding ElementName=MiniumButton}"
+                                                                                     Event="MouseEnter" />
+                                            <attachedCommandBehavior:BehaviorBinding Command="{Binding BackWhiteCommand,
+                                                                                                       ElementName=MWindow}"
+                                                                                     CommandParameter="{Binding ElementName=MiniumButton}"
+                                                                                     Event="MouseLeave" />
+                                        </attachedCommandBehavior:CommandBehaviorCollection.Behaviors>
+                                    </Button>
                                     <Border Panel.ZIndex="{Binding Path=WMargin,
                                                                    ElementName=MWindow}"
                                             BorderBrush="{x:Static SystemParameters.WindowGlassBrush}"
@@ -245,6 +174,11 @@
                             <AdornerDecorator />
                         </Grid>
                     </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="WindowChrome.WindowChrome">
+                <Setter.Value>
+                    <WindowChrome CaptionHeight="0" ResizeBorderThickness="7" />
                 </Setter.Value>
             </Setter>
         </Style>

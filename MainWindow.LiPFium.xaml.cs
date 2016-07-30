@@ -69,7 +69,7 @@ namespace LiPFium
         /// </summary>
         // Using a DependencyProperty as the backing store for WMargin.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty WMarginProperty =
-            DependencyProperty.Register("WMargin", typeof(int), typeof(MainWindow), new PropertyMetadata(0));
+            DependencyProperty.Register("WMargin", typeof(int), typeof(MainWindow), new PropertyMetadata(10));
 
         public double ScaledFontSize
         {
@@ -85,7 +85,20 @@ namespace LiPFium
 
         #region MainWindow Events Core
 
-        public void MWindowSC(object sender, SizeChangedEventArgs e)
+        private void ToRed(Control a)
+        {
+            SetBGTransform(a, ((SolidColorBrush)a.Background).Color, Colors.Red, 0.2);
+        }
+        private void ToGray(Control a)
+        {
+            SetBGTransform(a, ((SolidColorBrush)a.Background).Color, Color.FromRgb(218, 218, 218), 0.2);
+        }
+        private void ToWhite(Control a)
+        {
+            SetBGTransform(a, ((SolidColorBrush)a.Background).Color, Color.FromRgb(240, 240, 240), 0.3);
+        }
+
+        private void MWindowSC()
         {
             if (WindowState == WindowState.Maximized)
             {
@@ -100,57 +113,27 @@ namespace LiPFium
             //ScaledFontSize = (BackspaceButton?.FontSize + 24)/2 ?? 30;
         }
 
-        private void CloseButtonOnME()
+        private void CloseApp()
         {
-            SetBGTransform((Button)MWindow.Template.FindName("CloseButton", MWindow), Color.FromRgb(242, 242, 242), Colors.Red, 0.1);
+            Application.Current.Shutdown();
         }
 
-        private void CloseButtonOnML()
-        {
-            SetBGTransform((Button)MWindow.Template.FindName("CloseButton", MWindow), Colors.Red, Color.FromRgb(242, 242, 242), 0.3);
-        }
-
-        private void MARButtonOnME()
-        {
-            SetBGTransform((Button)MWindow.Template.FindName("MaximizeAndRestoreButton", MWindow), Color.FromRgb(242, 242, 242), Color.FromRgb(218, 218, 218), 0.1);
-        }
-
-        private void MARButtonOnML()
-        {
-            SetBGTransform((Button)MWindow.Template.FindName("MaximizeAndRestoreButton", MWindow), Color.FromRgb(218, 218, 218), Color.FromRgb(242, 242, 242), 0.3);
-        }
-
-        private void MiniumButtonOnME()
-        {
-            SetBGTransform((Button)MWindow.Template.FindName("MiniumButton", MWindow), Color.FromRgb(242, 242, 242), Color.FromRgb(218, 218, 218), 0.1);
-        }
-
-        private void MiniumButtonOnML()
-        {
-            SetBGTransform((Button)MWindow.Template.FindName("MiniumButton", MWindow), Color.FromRgb(218, 218, 218), Color.FromRgb(242, 242, 242), 0.3);
-        }
-
-        private void TitlebarOnMD()
-        {
-            DragMove();
-        }
-
-        private void MiniumButtonOnClick()
+        private void MiniumWindow()
         {
             WindowState = WindowState.Minimized;
         }
 
-        private void MARButtonOnClick()
+        private void MORWindow()
         {
             if (WindowState == WindowState.Maximized)
             {
                 WindowState = WindowState.Normal;
-                ((Button)MWindow.Template.FindName("MaximizeAndRestoreButton", MWindow)).Content = "";
+                ((Button)MWindow.Template.FindName("MaximizeAndRestoreButton", MWindow)).Content = "";
             }
             else
             {
                 WindowState = WindowState.Maximized;
-                ((Button)MWindow.Template.FindName("MaximizeAndRestoreButton", MWindow)).Content = "";
+                ((Button)MWindow.Template.FindName("MaximizeAndRestoreButton", MWindow)).Content = "";
             }
         }
 
@@ -158,18 +141,7 @@ namespace LiPFium
 
 
         #region Commands Core
-        private void ToRed(Control a)
-        {
-            SetBGTransform(a, ((SolidColorBrush)a.Background).Color, Colors.Red, 0.1);
-        }
-        private void ToGray(Control a)
-        {
-            SetBGTransform(a, ((SolidColorBrush)a.Background).Color, Color.FromRgb(218, 218, 218), 0.1);
-        }
-        private void ToWhite(Control a)
-        {
-            SetBGTransform(a, ((SolidColorBrush)a.Background).Color, Color.FromRgb(240, 240, 240), 0.1);
-        }
+
         private RelayCommand<Control> _hoverRedCommand;
 
         public RelayCommand<Control> HoverRedCommand
@@ -185,16 +157,25 @@ namespace LiPFium
         public RelayCommand<Control> BackWhiteCommand
             => _backWhiteCommand ?? (_backWhiteCommand = new RelayCommand<Control>(ToWhite));
 
-        private void CloseApp()
-        {
-            Application.Current.Shutdown();
-        }
-
         private RelayCommand _closeCommand;
 
         public RelayCommand CloseCommand
             => _closeCommand ?? (_closeCommand = new RelayCommand(CloseApp));
 
+        private RelayCommand _sizeChangedCommand;
+
+        public RelayCommand SizeChangedCommand
+            => _sizeChangedCommand ?? (_sizeChangedCommand = new RelayCommand(MWindowSC));
+
+        private RelayCommand _miniumWindowCommand;
+
+        public RelayCommand MiniumWindowCommand
+            => _miniumWindowCommand ?? (_miniumWindowCommand = new RelayCommand(MiniumWindow));
+
+        private RelayCommand _morWindowCommand;
+
+        public RelayCommand MORWindowCommand
+            => _morWindowCommand ?? (_morWindowCommand = new RelayCommand(MORWindow));
         #endregion
     }
 }

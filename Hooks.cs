@@ -44,12 +44,7 @@ namespace LiPFium
             return (IntPtr)0;
         }
 
-        private bool IsOnTitleBar(Point p)
-        {
-            if (p.Y >= WMargin && p.Y < 35 && p.X < RenderSize.Width - 140)
-                return true;
-            return false;
-        }
+        private bool IsOnTitleBar(Point p) => p.Y >= WMargin && p.Y < 35 + WMargin && p.X < RenderSize.Width - 140;
 
         private void WinSourceInitialized(object sender, EventArgs e)
         {
